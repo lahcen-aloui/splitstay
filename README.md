@@ -2,7 +2,9 @@
 
 A browser-local EUR expense ledger that explains who paid, each person's share, and suggested transfers.
 
-Desktop and mobile screenshots will be captured from the running app by browser CI after its workflows pass, then added to `docs/screenshots/`.
+![SplitStay desktop preview](docs/screenshots/desktop.png)
+
+[View the mobile screenshot](docs/screenshots/mobile.png).
 
 ## What it does
 
@@ -39,7 +41,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-GitHub Actions runs lint, strict type checking, unit tests, the production build, and a separate Chromium browser job. Local lint, type checks, unit tests, and builds passed. The local shell could not run Playwright's CLI browser in the restricted development environment; connected-browser verification and any remaining limits are described below. CI results are not claimed before its first run.
+[Verified GitHub Actions run](https://github.com/lahcen-aloui/splitstay/actions/runs/38149295202): lint, strict type checking, all 81 unit tests, the production build, and all 24 desktop Chrome / Pixel 7 browser cases passed. The screenshots above were captured by that successful browser job and inspected at both sizes.
 
 ## Stack and structure
 
@@ -57,9 +59,9 @@ EUR input is parsed from decimal text using BigInt and then stored as safe integ
 
 Payer credits minus participant shares yield net balances summing to zero. Creditors and debtors are sorted by ID, then each suggested transfer clears the smaller outstanding balance. Transfers clear the balances; no minimal-transfer-count claim or payment execution is made. Warm neutral panels separate the ledger from balances, with explicit receive/pay labels as well as color.
 
-Unit tests cover guarded concurrent writes, failed-save retry snapshots, explicit reload/reset recovery, and exact parsing, rounding, subsets, outside payers, reference protection, nested storage validation, unsafe totals, and settlements. Earlier connected-browser checks covered expense, recovery, and failed-write flows at desktop and mobile sizes before the final concurrency changes. Browser execution of the updated source is pending GitHub CI; local Playwright discovery does not establish runtime acceptance.
+Unit tests cover guarded concurrent writes, failed-save retry snapshots, explicit reload/reset recovery, and exact parsing, rounding, subsets, outside payers, reference protection, nested storage validation, unsafe totals, and settlements. The successful CI browser run verifies expense, recovery, and failed-write flows at desktop and mobile sizes against the published source.
 
-The browser suite retains the original desktop/mobile flows and actual screenshot capture. It now also checks two pages in the same context/origin for stale updates, deletion/reset, queued writes, failed-save retries, draft preservation, and corrupt data; dialog initial focus, focus containment, Escape dismissal and return focus; recovered writes followed by reload; and absence of application runtime errors on every page. Confirmation actions pause during a pending save, and the development indicator is disabled for clean screenshot captures. Browser execution of the publication source and inspection of both desktop/mobile screenshots remain CI acceptance gates; no fresh screenshots are claimed here.
+The browser suite retains the original desktop/mobile flows and actual screenshot capture. It now also checks two pages in the same context/origin for stale updates, deletion/reset, queued writes, failed-save retries, draft preservation, and corrupt data; dialog initial focus, focus containment, Escape dismissal and return focus; recovered writes followed by reload; and absence of application runtime errors on every page. Confirmation actions pause during a pending save, and the development indicator is disabled for clean screenshot captures. All 24 browser cases passed with no collected application runtime errors. Both actual CI screenshots were inspected for layout and overlay absence.
 
 ## Dependency audit
 
